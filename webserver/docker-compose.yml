@@ -10,8 +10,8 @@ services:
     volumes_from:
       - php
     volumes:
-      - E:/docker/Dockerfiles/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - E:/docker/Dockerfiles/nginx/sites-enabled/:/etc/nginx/conf.d/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-enabled/:/etc/nginx/conf.d/
     networks:
       - webserver
   
@@ -21,8 +21,8 @@ services:
       - mysql
       - redis
     ports:
-      - "8000:8000"
       - "9000:9000"
+      - "9066:9066"
     volumes:
       - E:/wwwroot:/var/wwwroot
     networks: 
