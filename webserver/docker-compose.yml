@@ -20,12 +20,12 @@ services:
       context: ./php
       dockerfile: Dockerfile
       args:
-        - PHP_VERSION=7.1
+        - PHP_VERSION=${PHP_VERSION}
     depends_on:
       - mysql
       - redis
     volumes:
-      - E:/wwwroot:/var/wwwroot
+      - ${SITE_DIR}:/var/wwwroot
     # networks: 
     #   - webserver
 
@@ -36,9 +36,9 @@ services:
       - "3306:3306"
     environment:
       TZ: 'Asia/Shanghai'
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - E:/docker/data/mysql:/var/lib/mysql
+      - ${MYSQL_DATA_DIR}:/var/lib/mysql
     # networks: 
     #   - webserver
 

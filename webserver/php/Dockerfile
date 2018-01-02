@@ -33,7 +33,7 @@ RUN pecl install /home/redis.tgz \
     && pecl install /home/xdebug.tgz \
     && echo "zend_extension=${ZEND_EXTENSION_DIR}xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_port=9000\nxdebug.remote_autostart=on\nxdebug.remote_host=${XDEBUG_REMOTE_HOST}\nxdebug.remote_log=/var/log/php/x-debug-remote.log" > /usr/local/etc/php/conf.d/xdebug.ini \
     && mkdir -p /var/log/php \
-    && chmod 777 /var/log/php
+    && chown www-data:www-data /var/log/php
 
 COPY composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer \
