@@ -8,7 +8,7 @@ ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ 
     NODE_VERSION=node-v8.9.4-linux-x64
     
 COPY sources.list /etc/apt/sources.list
-RUN apt-get update && apt-get install -y \
+RUN apt-get -y update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \

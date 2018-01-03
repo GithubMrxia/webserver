@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+
+  ubuntu:
+    build:
+      context: .
+      dockerfile: Dockerfile
