@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile
       args:
         - PHP_VERSION=${PHP_VERSION}
+        - XDEBUG_REMOTE_HOST=${XDEBUG_REMOTE_HOST}
     depends_on:
       - mysql
       - redis

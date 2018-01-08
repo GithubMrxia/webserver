@@ -1,10 +1,10 @@
 ARG PHP_VERSION
 FROM php:${PHP_VERSION}-fpm
 
+ARG XDEBUG_REMOTE_HOST=10.0.75.1
 ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ \
     REDIS_VERSION=3.1.5 \
     XDEBUG_VERSION=2.6.0beta1 \
-    XDEBUG_REMOTE_HOST=10.0.75.1 \
     NODE_VERSION=node-v8.9.4-linux-x64
     
 COPY sources.list /etc/apt/sources.list
@@ -32,7 +32,7 @@ ADD resources/${NODE_VERSION}.tar.xz /home/resources
 RUN pecl install /home/resources/redis.tgz \
     && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
     && pecl install /home/resources/xdebug.tgz \
-    && echo "zend_extension=${ZEND_EXTENSION_DIR}xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_port=9000\nxdebug.remote_autostart=on\nxdebug.remote_host=${XDEBUG_REMOTE_HOST}\nxdebug.remote_log=/var/log/php/x-debug-remote.log" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "zend_extension=${ZEND_EXTENSION_DIR}xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_port=9000\nxdebug.remote_autostart=on\nxdebug.remote_host=${XDEBUG_REMOTE_HOST}\nxdebug.remote_log=/var/log/php/xdebug-remote.log" > /usr/local/etc/php/conf.d/xdebug.ini \
     && mkdir -p /var/log/php \
     && chown www-data:www-data /var/log/php \
     && cp /home/resources/${NODE_VERSION}/bin/node /usr/local/bin/node \
@@ -44,7 +44,8 @@ RUN pecl install /home/resources/redis.tgz \
 COPY composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer \
     && useradd -m -G www-data -s /bin/bash mrxia \
-    && usermod -G www-data mrxia
+    && usermod -Gwww-data mrxia \
+    && chmod 765 /var/log/php/xdebug-remote.log
     # && curl "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" -O /usr/local/bin/gosu \
     # && chmod +x /usr/local/bin/gosu \
     # && gosu mrxia \
