@@ -1,2 +1,3 @@
 .vscode/*
 webserver/docs/*
+webserver/.env
