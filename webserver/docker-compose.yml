@@ -6,7 +6,7 @@ services:
     depends_on:
       - php
     ports:
-      - "80:80"
+      - "${NGINX_PORT}:80"
     volumes_from:
       - php
     volumes:

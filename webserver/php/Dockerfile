@@ -7,7 +7,7 @@ ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ 
     XDEBUG_VERSION=2.6.0beta1 \
     NODE_VERSION=node-v8.9.4-linux-x64
     
-COPY sources.list /etc/apt/sources.list
+COPY resources/sources.list /etc/apt/sources.list
 RUN apt-get -y update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -15,8 +15,8 @@ RUN apt-get -y update && apt-get install -y \
     libpng-dev \
     && rm -r /var/lib/apt/lists/*
     
-COPY php.ini         /usr/local/etc/php/php.ini
-COPY php-fpm.conf    /usr/local/etc/php-fpm.conf
+COPY conf/php.ini         /usr/local/etc/php/php.ini
+COPY conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) zip \
     gd \
@@ -41,11 +41,12 @@ RUN pecl install /home/resources/redis.tgz \
     && npm install -g cnpm --registry=https://registry.npm.taobao.org \
     && rm -rf /home/resources
 
-COPY composer.phar /usr/local/bin/composer
+COPY resources/composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer \
     && useradd -m -G www-data -s /bin/bash mrxia \
-    && usermod -Gwww-data mrxia \
-    && chmod 765 /var/log/php/xdebug-remote.log
+    && usermod -G www-data mrxia \
+    && touch /var/log/php/xdebug-remote.log \
+    && chmod -R 777 /var/log/php
     # && curl "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" -O /usr/local/bin/gosu \
     # && chmod +x /usr/local/bin/gosu \
     # && gosu mrxia \

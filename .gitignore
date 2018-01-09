@@ -1,3 +1,2 @@
-.vscode/*
-webserver/docs/*
-webserver/.env
+.vscode
+.env
