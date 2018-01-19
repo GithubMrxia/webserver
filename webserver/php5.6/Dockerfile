@@ -23,6 +23,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     mbstring \
     iconv \
     mcrypt \
+    mysql \
     mysqli \
     pdo_mysql
 
@@ -47,9 +48,7 @@ RUN chmod 755 /usr/local/bin/composer \
     && usermod -G www-data mrxia \
     && touch /var/log/php/xdebug-remote.log \
     && chmod -R 777 /var/log/php
-    # && curl "https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64" -O /usr/local/bin/gosu \
-    # && chmod +x /usr/local/bin/gosu \
-    # && gosu mrxia \
+
 USER mrxia
 RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 USER root
