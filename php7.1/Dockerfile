@@ -24,7 +24,8 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     iconv \
     mcrypt \
     mysqli \
-    pdo_mysql
+    pdo_mysql \
+    bcmath
 
 COPY resources/redis-${REDIS_VERSION}.tgz /home/resources/redis.tgz
 COPY resources/xdebug-${XDEBUG_VERSION}.tgz /home/resources/xdebug.tgz
