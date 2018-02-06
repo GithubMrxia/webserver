@@ -12,10 +12,11 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/sites-enabled/:/etc/nginx/conf.d/
-    # networks:
-    #   - webserver
+    networks:
+      - bridge
   
   php5.6:
+    container_name: web_php_5.6
     build:
       context: ./php5.6
       dockerfile: Dockerfile
@@ -29,8 +30,8 @@ services:
       - redis
     volumes:
       - ${SITE_DIR}:/var/wwwroot
-    # networks: 
-    #   - webserver
+    networks: 
+      - bridge
     
   php7.1:
     build:
@@ -46,8 +47,8 @@ services:
       - redis
     volumes:
       - ${SITE_DIR}:/var/wwwroot
-    # networks: 
-    #   - webserver
+    networks: 
+      - bridge
 
   mysql:
     image: mysql:5.7
@@ -59,16 +60,16 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ${MYSQL_DATA_DIR}:/var/lib/mysql
-    # networks: 
-    #   - webserver
+    networks: 
+      - bridge
 
   redis:
     image: redis:latest
     restart: always
     ports:
       - 6379:6379
-    # networks: 
-    #   - webserver
+    networks: 
+      - bridge
       
-# networks:
-#   webserver:
+networks:
+  bridge:
