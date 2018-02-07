@@ -20,8 +20,6 @@ COPY conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) zip \
     gd \
-    mbstring \
-    iconv \
     mcrypt \
     mysql \
     mysqli \
@@ -32,7 +30,7 @@ COPY resources/redis-${REDIS_VERSION}.tgz /home/resources/redis.tgz
 COPY resources/xdebug-${XDEBUG_VERSION}.tgz /home/resources/xdebug.tgz
 ADD resources/${NODE_VERSION}.tar.xz /home/resources
 RUN pecl install /home/resources/redis.tgz \
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
+    && docker-php-ext-enable redis \
     && pecl install /home/resources/xdebug.tgz \
     && echo "zend_extension=${ZEND_EXTENSION_DIR}xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_port=9000\nxdebug.remote_autostart=on\nxdebug.remote_host=${XDEBUG_REMOTE_HOST}\nxdebug.remote_log=/var/log/php/xdebug-remote.log" > /usr/local/etc/php/conf.d/xdebug.ini \
     && mkdir -p /var/log/php \
