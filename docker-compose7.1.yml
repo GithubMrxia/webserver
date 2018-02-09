@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   nginx:
-    image: nginx:1.13.8
+    image: nginx:${NGINX_VERSION}
     depends_on:
       - php7.1
     ports:
@@ -31,7 +31,7 @@ services:
       - webserver
 
   mysql:
-    image: mysql:5.7
+    image: mysql:${MYSQL_VERSION}
     restart: always
     ports:
       - "${MYSQL_PORT}:3306"
