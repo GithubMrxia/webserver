@@ -50,6 +50,26 @@ services:
       - ${REDIS_PORT}:6379
     networks: 
       - webserver
+
+  postgresql:
+    image: postgres:9.6
+    restart: always
+    ports:
+      - "${POSTGTESQL_PORT}:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGTESQL_ROOT_PASSWORD}
+    volumes:
+      - ${POSTGTESQL_DATA_DIR}:/var/lib/postgresql
+    networks: 
+      - webserver
+
+  mongo:
+    image: mongo:${MONGO_VERSION}
+    restart: always
+    ports:
+      - ${MONGO_PORT}:6379
+    networks: 
+      - webserver
       
 networks:
   webserver:
