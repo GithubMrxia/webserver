@@ -15,6 +15,7 @@ RUN apt-get -y update && apt-get install -y \
     libpng-dev \
     libpq-dev \
     vim \
+    git \
     && rm -r /var/lib/apt/lists/*
     
 COPY conf/php5.6.ini         /usr/local/etc/php/php.ini
@@ -51,12 +52,12 @@ RUN pecl install /home/resources/redis.tgz \
 
 COPY resources/composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer \
-    && useradd -m -G www-data -s /bin/bash mrxia \
-    && usermod -G www-data mrxia \
+    && useradd -m -G www-data -s /bin/bash company \
+    && usermod -G www-data company \
     && touch /var/log/php/xdebug-remote.log \
     && chmod -R 777 /var/log/php
 
-USER mrxia
+USER company
 RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 USER root
 EXPOSE 9000
