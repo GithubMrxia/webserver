@@ -66,39 +66,5 @@ services:
     networks: 
       - webserver
 
-  # bg-sync2:
-  #   image: cweagans/bg-sync
-  #   volumes:
-  #     - ${MYSQL_DATA_DIR}:/source
-  #   volumes_from:
-  #     - mysql
-  #   environment:
-  #     - SYNC_DESTINATION=/var/lib/mysql
-  #     - SYNC_MAX_INOTIFY_WATCHES=40000
-  #     - SYNC_VERBOSE=1
-  #   privileged: true
-  #   networks: 
-  #     - webserver
-
-  # postgresql:
-  #   image: postgres:9.6
-  #   restart: always
-  #   ports:
-  #     - ${POSTGTESQL_PORT}:5432
-  #   environment:
-  #     POSTGRES_PASSWORD: ${POSTGTESQL_ROOT_PASSWORD}
-  #   volumes:
-  #     - ${POSTGTESQL_DATA_DIR}:/var/lib/postgresql
-  #   networks: 
-  #     - webserver
-
-  # mongo:
-  #   image: mongo:${MONGO_VERSION}
-  #   restart: always
-  #   ports:
-  #     - ${MONGO_PORT}:27017
-  #   networks: 
-  #     - webserver
-      
 networks:
   webserver:
