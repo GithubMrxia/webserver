@@ -33,22 +33,22 @@ function splitStr()
     IFS=${OLD_IFS}
 }
 
-splitStr ${PHP_VERSION}, ','
+# splitStr ${PHP_VERSION}, ','
 
 function dkup()
 {
-    for version in ${arr[*]}
-    do
-        docker-compose -f docker-compose${version}.yml up -d
-    done
+    # for version in ${arr[*]}
+    # do
+        docker-compose -f docker-compose.yml up -d
+    # done
 }
 
 function dkdown()
 {
-    for version in ${arr[*]}
-    do
-        docker-compose -f docker-compose${version}.yml down
-    done
+    # for version in ${arr[*]}
+    # do
+        docker-compose -f docker-compose.yml down
+    # done
 }
 
 case $1 in
