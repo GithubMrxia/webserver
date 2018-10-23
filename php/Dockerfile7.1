@@ -43,3 +43,6 @@ RUN composer config -g repo.packagist composer https://packagist.laravel-china.o
 USER root
 EXPOSE 9000
 VOLUME ["/var/wwwroot"]
+WORKDIR /var/wwwroot
+
+CMD ["sh", "-c", "php-fpm"]
