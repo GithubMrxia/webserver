@@ -17,7 +17,7 @@ services:
   
 
   php7.1:
-    image: mrxia/php7.1:server
+    image: mrxia/php:7.1-server
     depends_on:
       - mysql
       - redis
