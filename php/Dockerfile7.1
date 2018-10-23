@@ -1,9 +1,7 @@
 FROM php:7.1-fpm
 
-ARG XDEBUG_REMOTE_HOST=10.0.75.1
 ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ \
     REDIS_VERSION=4.1.1 \
-    XDEBUG_VERSION=2.6.1 \
     NODE_VERSION=node-v8.12.0-linux-x64
     
 RUN apt-get -y update && apt-get install -y \
@@ -23,12 +21,9 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     bcmath
 
 COPY resources/redis-${REDIS_VERSION}.tgz /home/resources/redis.tgz
-COPY resources/xdebug-${XDEBUG_VERSION}.tgz /home/resources/xdebug.tgz
 ADD resources/${NODE_VERSION}.tar.xz /home/resources
 RUN pecl install /home/resources/redis.tgz \
     && docker-php-ext-enable redis \
-    && pecl install /home/resources/xdebug.tgz \
-    && echo "zend_extension=${ZEND_EXTENSION_DIR}xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_port=9000\nxdebug.remote_autostart=on\nxdebug.remote_host=${XDEBUG_REMOTE_HOST}" > /usr/local/etc/php/conf.d/xdebug.ini \
     && mkdir -p /var/log/php \
     && chown www-data:www-data /var/log/php \
     && cp /home/resources/${NODE_VERSION}/bin/node /usr/local/bin/node \
@@ -41,7 +36,6 @@ COPY resources/composer.phar /usr/local/bin/composer
 RUN chmod 755 /usr/local/bin/composer \
     && useradd -m -G www-data -s /bin/bash mrxia \
     && usermod -G www-data mrxia \
-    && touch /var/log/php/xdebug-remote.log \
     && chmod -R 777 /var/log/php
 
 USER mrxia

@@ -28,7 +28,6 @@ services:
       - redis
     volumes:
       - /var/wwwroot
-      - ${USER_DIR}:/home/company
     networks: 
       - webserver
 
