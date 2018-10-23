@@ -17,10 +17,7 @@ services:
   
 
   php7.1:
-    container_name: webserver_php_7.1
-    build:
-      context: ./php
-      dockerfile: Dockerfile7.1
+    image: mrxia/php7.1:server
     depends_on:
       - mysql
       - redis
