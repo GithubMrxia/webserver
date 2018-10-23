@@ -46,8 +46,6 @@ $ git clone https://github.com/GithubMrxia/webserver.git
 PHP_VERSION=5.6,7.1
 # 本地站点目录
 SITE_DIR=/mac/wwwroot
-# xdebug ip 远程debug用（ifconfig获得）
-XDEBUG_REMOTE_HOST=192.168.1.108
 
 
 ####        NGINX        ####

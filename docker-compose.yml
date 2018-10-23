@@ -21,8 +21,6 @@ services:
     build:
       context: ./php
       dockerfile: Dockerfile7.1
-      args:
-        - XDEBUG_REMOTE_HOST=${XDEBUG_REMOTE_HOST}
     depends_on:
       - mysql
       - redis
