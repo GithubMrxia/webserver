@@ -41,7 +41,6 @@ RUN chmod 755 /usr/local/bin/composer \
 USER mrxia
 RUN composer config -g repo.packagist composer https://packagist.laravel-china.org
 USER root
-EXPOSE 9000
 VOLUME ["/var/wwwroot"]
 WORKDIR /var/wwwroot
 
