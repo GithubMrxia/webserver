@@ -22,7 +22,7 @@ services:
       - mysql
       - redis
     volumes:
-      - /var/wwwroot
+      - ${SITE_DIR}:/var/wwwroot
     networks: 
       - webserver
 
@@ -44,21 +44,11 @@ services:
     restart: always
     ports:
       - ${REDIS_PORT}:6379
-    networks: 
-      - webserver
-
-  bg-sync:
-    image: cweagans/bg-sync
     volumes:
-      - ${SITE_DIR}:/source
-    volumes_from:
-      - nginx
-    environment:
-      - SYNC_DESTINATION=/var/wwwroot
-      - SYNC_MAX_INOTIFY_WATCHES=40000
-      - SYNC_VERBOSE=1
-    privileged: true
-    networks: 
+      - ${REDIS_DATA}:/data
+      - ./redis/etc/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
       - webserver
 
 networks:
