@@ -24,6 +24,7 @@ services:
       - redis
     volumes:
       - ${SITE_DIR}:/var/wwwroot
+      - ${PHP_DATA_DIR}:/var/log/php
     networks: 
       - webserver
 
