@@ -3,6 +3,7 @@ services:
 
   nginx:
     image: nginx:${NGINX_VERSION}
+    restart: always
     depends_on:
       - php7.1
     ports:
@@ -16,9 +17,9 @@ services:
     networks:
       - webserver
   
-
   php7.1:
     image: mrxia/php:7.1-server
+    restart: always
     depends_on:
       - mysql
       - redis
