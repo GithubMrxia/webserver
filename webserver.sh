@@ -39,7 +39,7 @@ function dkup()
 {
     # for version in ${arr[*]}
     # do
-        docker-compose -f docker-compose.yml up -d
+        docker-compose -f docker-compose.yml up --build --force-recreate -d
     # done
 }
 

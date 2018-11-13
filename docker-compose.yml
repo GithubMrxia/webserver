@@ -2,7 +2,8 @@ version: '2.1'
 services:
 
   nginx:
-    image: nginx:${NGINX_VERSION}
+    image: nginx:1.13.8
+    container_name: webserver-nginx
     restart: always
     depends_on:
       - php7.1
@@ -13,37 +14,44 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/sites-enabled/:/etc/nginx/conf.d/
-      - ${NGINX_DATA_DIR}:/data/log
+      - ${NGINX_LOG_DIR}:/data/log
     networks:
       - webserver
   
   php7.1:
     image: mrxia/php:7.1-server
+    container_name: webserver-php
     restart: always
     depends_on:
       - mysql
       - redis
     volumes:
       - ${SITE_DIR}:/var/wwwroot
-      - ${PHP_DATA_DIR}:/var/log/php
+      - ${PHP_LOG_DIR}:/var/log/php
     networks: 
       - webserver
 
   mysql:
-    image: mysql:${MYSQL_VERSION}
+    build: ./mysql
+    container_name: webserver-mysql
     restart: always
     ports:
       - ${MYSQL_PORT}:3306
     environment:
       TZ: 'Asia/Shanghai'
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+      MYSQL_ONETIME_PASSWORD: 'true'
     volumes:
-      - ${MYSQL_DATA_DIR}:/var/lib/mysql
+      - ${MYSQL_DATA_DIR}:/mysql/data
+      - ${MYSQL_LOG_DIR}:/mysql/log
+      - ${MYSQL_FILES_DIR}:/mysql/files
+      - ./mysql/etc/my.cnf:/etc/my.cnf
     networks: 
       - webserver
 
   redis:
-    image: redis:${REDIS_VERSION}
+    image: redis:5.0-alpine
+    container_name: webserver-redis
     restart: always
     ports:
       - ${REDIS_PORT}:6379
