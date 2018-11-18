@@ -45,6 +45,7 @@ services:
       - ${MYSQL_DATA_DIR}:/mysql/data
       - ${MYSQL_LOG_DIR}:/mysql/log
       - ${MYSQL_FILES_DIR}:/mysql/files
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./mysql/etc/my.cnf:/etc/my.cnf
     networks: 
       - webserver
