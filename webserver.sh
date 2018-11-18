@@ -34,7 +34,7 @@ if [ ! -e $MYSQL_LOG_DIR"/mysql-error.log" ]; then
     chown 27 $MYSQL_LOG_DIR"/mysql-error.log"
 fi
 
-function splitStr(
+function splitStr()
 {
     OLD_IFS=${IFS}
     IFS=$2,
