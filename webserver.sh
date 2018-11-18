@@ -1,6 +1,6 @@
 #!/bin/bash
-cd `dirname $0`
-REAL_PATH=$(cd `dirname $0`; pwd)
+source ./.env
+REAL_PATH=$(pwd)
 NGINX_DEFAULT_CONF='default.conf'
 NGINX_SITE_EXAMPLE_PATH='nginx/sites-example/'
 NGINX_SITE_ENABLED_PATH='nginx/sites-enabled/'
@@ -25,7 +25,16 @@ if [ ! -e ${MYSQL_DATA_DIR} ]; then
     mkdir -p ${MYSQL_DATA_DIR}
 fi
 
-function splitStr()
+if [ ! -d $MYSQL_LOG_DIR ]; then
+    mkdir -p $MYSQL_LOG_DIR
+fi
+
+if [ ! -e $MYSQL_LOG_DIR"/mysql-error.log" ]; then
+    touch $MYSQL_LOG_DIR"/mysql-error.log"
+    chown 27 $MYSQL_LOG_DIR"/mysql-error.log"
+fi
+
+function splitStr(
 {
     OLD_IFS=${IFS}
     IFS=$2,
