@@ -27,6 +27,7 @@ fi
 
 if [ ! -d $MYSQL_LOG_DIR ]; then
     mkdir -p $MYSQL_LOG_DIR
+    chown 27 $MYSQL_LOG_DIR
 fi
 
 if [ ! -e $MYSQL_LOG_DIR"/mysql-error.log" ]; then
