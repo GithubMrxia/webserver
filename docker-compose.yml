@@ -9,6 +9,7 @@ services:
       - php7.1
     ports:
       - ${NGINX_PORT}:80
+      - ${NGINX_PORT_HTTPS}:443
     volumes_from:
       - php7.1
     volumes:
