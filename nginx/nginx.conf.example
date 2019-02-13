@@ -66,6 +66,10 @@ http {
     include /etc/nginx/sites-enabled/*.conf;
 }
 
+stream {
+    include /etc/nginx/stream-enabled/*.conf;
+}
+
 #mail {
 #   # See sample authentication script at:
 #   # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
