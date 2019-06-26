@@ -67,5 +67,22 @@ services:
     networks:
       - webserver
 
+  rabbitmq:
+    build: ./rabbitmq
+    container_name: webserver-rabbitmq
+    restart: always
+    ports:
+      - ${RABBITMQ_PORT}:5672
+      - ${RABBITMQ_ADMIN_PORT}:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ${RABBIT_DATA_DIR}:/var/lib/rabbitmq
+      - ${RABBIT_LOG_DIR}:/var/log/rabbitmq/log
+    hostname: ${RABBITMQ_HOSTNAME}
+    networks: 
+      - webserver
+
 networks:
   webserver:
