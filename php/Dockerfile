@@ -11,7 +11,9 @@ RUN set -xe \
     libjpeg-turbo-dev \
     libpng-dev \
     libmcrypt-dev \
-    shadow
+    shadow \
+    supervisor \
+    postgresql-dev
 
 COPY conf/php7.1.ini         /usr/local/etc/php/php.ini
 COPY conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
@@ -27,12 +29,16 @@ RUN set -ex \
     opcache \
     iconv \
     pdo_mysql \
-    mysqli
+    mysqli \
+    pgsql \
+    pdo_pgsql \
+    sockets
 
 COPY resources/redis-${REDIS_VERSION}.tgz /home/resources/redis.tgz
 RUN pecl install /home/resources/redis.tgz \
     && docker-php-ext-enable redis \
     && mkdir -p /var/log/php \
+    && mkdir -p /var/log/php/supervisor \
     && chown www-data:www-data /var/log/php \
     && rm -rf /home/resources
 
@@ -41,10 +47,12 @@ RUN chmod 755 /usr/local/bin/composer \
     && useradd -m -G www-data -s /bin/bash mrxia \
     && usermod -G www-data mrxia
 
+COPY supervisor/supervisord.conf   /etc/supervisor/supervisord.conf
+
 USER mrxia
 RUN composer config -g repo.packagist composer https://packagist.laravel-china.org
 USER root
 VOLUME ["/var/wwwroot"]
 WORKDIR /var/wwwroot
 
-CMD ["sh", "-c", "php-fpm"]
+CMD ["sh", "-c", "supervisord -c /etc/supervisor/supervisord.conf && php-fpm"]
