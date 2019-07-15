@@ -13,7 +13,11 @@ RUN set -xe \
     libmcrypt-dev \
     shadow \
     supervisor \
-    postgresql-dev
+    postgresql-dev \
+    tzdata \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* $HOME/.cache
 
 COPY conf/php7.1.ini         /usr/local/etc/php/php.ini
 COPY conf/php-fpm.conf    /usr/local/etc/php-fpm.conf

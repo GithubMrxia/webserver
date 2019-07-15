@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   nginx:
-    build: ./nginx
+    image: mrxia/nginx
     container_name: webserver-nginx
     restart: always
     depends_on:
