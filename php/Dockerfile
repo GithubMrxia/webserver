@@ -43,15 +43,15 @@ RUN pecl install /home/resources/redis.tgz \
     && rm -rf /home/resources
 
 COPY resources/composer.phar /usr/local/bin/composer
-RUN chmod 755 /usr/local/bin/composer \
-    && useradd -m -G www-data -s /bin/bash mrxia \
-    && usermod -G www-data mrxia
+RUN chmod 755 /usr/local/bin/composer
+#     && useradd -m -G www-data -s /bin/sh mrxia \
+#     && usermod -G www-data mrxia
 
 COPY supervisor/supervisord.conf   /etc/supervisor/supervisord.conf
 
-USER mrxia
+# USER mrxia
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
-USER root
+# USER root
 VOLUME ["/var/wwwroot"]
 WORKDIR /var/wwwroot
 
