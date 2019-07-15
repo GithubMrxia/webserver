@@ -50,7 +50,7 @@ RUN chmod 755 /usr/local/bin/composer \
 COPY supervisor/supervisord.conf   /etc/supervisor/supervisord.conf
 
 USER mrxia
-RUN composer config -g repo.packagist composer https://packagist.laravel-china.org
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 USER root
 VOLUME ["/var/wwwroot"]
 WORKDIR /var/wwwroot
