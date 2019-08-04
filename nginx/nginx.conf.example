@@ -25,6 +25,8 @@ http {
     include       mime.types;
 
     default_type  application/octet-stream;
+    
+    client_max_body_size 20m;
 
     ##
     # SSL Settings
