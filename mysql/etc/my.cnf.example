@@ -26,6 +26,8 @@ skip-name-resolve
 datadir=/mysql/data
 socket=/var/lib/mysql/mysql.sock
 
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
 # secure_file_priv参数是用来限制LOAD DATA, SELECT ... OUTFILE, and LOAD_FILE()传到哪个指定目录的。
 # secure_file_priv的值为null ，表示限制mysqld 不允许导入|导出
 # 当secure_file_priv的值为/tmp/ ，表示限制mysqld 的导入|导出只能发生在/tmp/目录下
