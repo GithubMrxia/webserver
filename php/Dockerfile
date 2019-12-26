@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-alpine
+FROM php:7.2-fpm-alpine
 
 ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ \
     REDIS_VERSION=4.1.1 \
@@ -19,7 +19,7 @@ RUN set -xe \
     && echo "Asia/Shanghai" > /etc/timezone \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* $HOME/.cache
 
-COPY conf/php7.1.ini         /usr/local/etc/php/php.ini
+COPY conf/php7.2.ini         /usr/local/etc/php/php.ini
 COPY conf/php-fpm.conf    /usr/local/etc/php-fpm.conf
 
 RUN set -ex \
