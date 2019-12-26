@@ -23,7 +23,7 @@ services:
       - webserver
   
   php7.1:
-    image: mrxia/php:7.1-server
+    image: mrxia/php:7.2-server
     container_name: webserver-php
     restart: always
     depends_on:
