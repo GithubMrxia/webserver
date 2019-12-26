@@ -7,6 +7,7 @@ services:
     restart: always
     depends_on:
       - php
+      # - php7.1
     ports:
       - ${NGINX_PORT}:80
       - ${NGINX_PORT_HTTPS}:443
@@ -35,6 +36,20 @@ services:
       - ./php/supervisor/conf.d:/etc/supervisor/conf.d
     networks: 
       - webserver
+
+  # php7.1:
+  #   image: mrxia/php:7.1-server
+  #   container_name: webserver-php7.1
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #     - redis
+  #   volumes:
+  #     - ${SITE_DIR}:/var/wwwroot
+  #     - ${PHP_LOG_DIR}:/var/log/php
+  #     - ./php/supervisor/conf.d:/etc/supervisor/conf.d
+  #   networks: 
+  #     - webserver
 
   mysql:
     build: ./mysql
