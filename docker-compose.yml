@@ -22,7 +22,7 @@ services:
       - ${NGINX_LOG_DIR}:/data/log
     networks:
       - webserver
-  
+
   php:
     image: mrxia/php:7.2-server
     container_name: webserver-php
@@ -34,7 +34,7 @@ services:
       - ${SITE_DIR}:/var/wwwroot
       - ${PHP_LOG_DIR}:/var/log/php
       - ./php/supervisor/conf.d:/etc/supervisor/conf.d
-    networks: 
+    networks:
       - webserver
 
   # php7.1:
@@ -48,7 +48,7 @@ services:
   #     - ${SITE_DIR}:/var/wwwroot
   #     - ${PHP_LOG_DIR}:/var/log/php
   #     - ./php/supervisor/conf.d:/etc/supervisor/conf.d
-  #   networks: 
+  #   networks:
   #     - webserver
 
   mysql:
@@ -67,7 +67,7 @@ services:
       - ${MYSQL_FILES_DIR}:/mysql/files
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - ./mysql/etc/my.cnf:/etc/my.cnf
-    networks: 
+    networks:
       - webserver
 
   redis:
@@ -97,8 +97,9 @@ services:
       - ${RABBIT_DATA_DIR}:/var/lib/rabbitmq
       - ${RABBIT_LOG_DIR}:/var/log/rabbitmq/log
     hostname: ${RABBITMQ_HOSTNAME}
-    networks: 
+    networks:
       - webserver
 
 networks:
   webserver:
+    name: webserver
