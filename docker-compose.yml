@@ -19,6 +19,7 @@ services:
       - ./nginx/sites-enabled/:/etc/nginx/conf.d/
       - ./nginx/cert/:/etc/nginx/cert/
       - ./nginx/stream-enabled/:/etc/nginx/stream-enabled/
+      - ./nginx/htpasswd:/etc/nginx/htpasswd
       - ${NGINX_LOG_DIR}:/data/log
     networks:
       - webserver
