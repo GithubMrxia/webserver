@@ -1,7 +1,7 @@
 FROM php:7.2-fpm-alpine
 
 ENV ZEND_EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20160303/ \
-    REDIS_VERSION=4.1.1 \
+    REDIS_VERSION=5.2.2 \
     NODE_VERSION=node-v8.12.0-linux-x64
 
 RUN set -xe \
@@ -38,23 +38,21 @@ RUN set -ex \
     pdo_pgsql \
     sockets
 
-COPY resources/redis-${REDIS_VERSION}.tgz /home/resources/redis.tgz
-RUN pecl install /home/resources/redis.tgz \
+RUN wget -O redis.tgz  https://pecl.php.net/package/redis/${REDIS_VERSION} \
+    && pecl install redis.tgz \
     && docker-php-ext-enable redis \
-    && mkdir -p /var/log/php \
-    && mkdir -p /var/log/php/supervisor \
-    && chown www-data:www-data /var/log/php \
-    && rm -rf /home/resources
+    && mkdir -p /var/log/php/supervisor /var/log/project \
+    && chown www-data:www-data /var/log/php /var/log/project \
+    && rm -rf redis.tgz
 
-COPY resources/composer.phar /usr/local/bin/composer
-RUN chmod 755 /usr/local/bin/composer
-#     && useradd -m -G www-data -s /bin/sh mrxia \
-#     && usermod -G www-data mrxia
+RUN wget -O composer https://getcomposer.org/composer-stable.phar \
+    && mv composer /usr/local/bin/composer \
+    && chmod 755 /usr/local/bin/composer
 
 COPY supervisor/supervisord.conf   /etc/supervisor/supervisord.conf
 
-# USER mrxia
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
 # USER root
 VOLUME ["/var/wwwroot"]
 WORKDIR /var/wwwroot
