@@ -34,6 +34,7 @@ services:
     volumes:
       - ${SITE_DIR}:/var/wwwroot
       - ${PHP_LOG_DIR}:/var/log/php
+      - ${PROJECT_LOG_DIR}:/var/log/project
       - ./php/supervisor/conf.d:/etc/supervisor/conf.d
     networks:
       - webserver
