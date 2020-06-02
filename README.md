@@ -16,17 +16,17 @@
 
 由于 Docker 确保了执行环境的一致性，使得应用的迁移更加容易。Docker 可以在很多平台上运行，无论是物理机、虚拟机、公有云、私有云，甚至是笔记本，其运行结果是一致的。因此用户可以很轻易的将在一个平台上运行的应用，迁移到另一个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。
 
-## 开发环境
+## 生产环境
 
 ### 组件
 
-Nginx + PHP + Redis + Mysql + Composer + NPM
+Nginx + PHP + Redis + MySQL + RabbitMQ
 
 ### 准备
 
 首先，你得安装Docker，[官网下载页面](https://www.docker.com/community-edition#/download)，下载对应系统版本并安装。
 
-另附一份很好的文档[Docker — 从入门到实践](https://yeasy.gitbooks.io/docker_practice/)。国内访问困难的，可以[下载到本地浏览](https://github.com/yeasy/docker_practice/wiki/%E4%B8%8B%E8%BD%BD)。
+另附一份很好的文档[Docker — 从入门到实践](https://yeasy.gitbooks.io/docker_practice/)。
 
 **克隆项目到本地**
 
@@ -36,43 +36,17 @@ $ git clone https://github.com/GithubMrxia/webserver.git
 
 ### 安装
 
-#### 配置.env文件
+#### 配置
 
-复制 .env.example 改名为 .env，修改里面的参数值为自己的
+复制 .env.example 改名为 .env，参考注释进行配置
 
-```shell
-####        PHP        ####
-# PHP版本(webserver.sh使用，多版本用","分隔)
-PHP_VERSION=5.6,7.1
-# 本地站点目录
-SITE_DIR=/mac/wwwroot
+#### php
 
-
-####        NGINX        ####
-# 版本
-NGINX_VERSION=1.13.8
-# nginx对外端口
-NGINX_PORT=80
-
-
-####        MYSQL        ####
-# 版本
-MYSQL_VERSION=5.7
-
-# mysql对外端口
-MYSQL_PORT=3306
-
-# 本地mysql数据保存路径
-MYSQL_DATA_DIR=/mac/Docker/mysql
-MYSQL_ROOT_PASSWORD=123456
-
-####        REDIS        ####
-# 版本
-REDIS_VERSION=4.0
-
-# redis对外端口
-REDIS_PORT=6379
-```
+* php 版本为 `7.2`
+* php开启了`opcache`，每次更新代码需要重启php容器 `docker container restart webserver-php`
+* 项目进行`composer`等一些操作需要进入php容器内的根目录进行操作，进入容器 `docker exec -it webserver-php sh`
+* composer镜像源已经替换为阿里
+* php镜像已经整合了`supervisor`，可直接使用
 
 #### Nginx
 
@@ -84,55 +58,46 @@ REDIS_PORT=6379
 
 * 安装有 `Composer`, 可切换为用户`mrxia`使用
 
-* 安装有 `NPM`，已配置淘宝源，可通过`cnpm`使用
+* 安装有 `NPM`，已配置淘宝源，可通过`cnpm`使用
 
 * 站点日志路径为`/var/log/nginx/`，具体看各站点配置
 
-* 配置文件里的`fastcgi_pass php7.1:9000;`修改为需要使用的php版本（默认为7.1）
+<!-- * 配置文件里的`fastcgi_pass php:9000;`修改为需要使用的php版本（默认为7.2） -->
 
 ##### 新增站点
 
-在nginx/sites-enabled/下新增配置文件，然后`docker container restart webserver_nginx_1`重启Nginx即可
-
-#### PHP
-
-* PHP 扩展各版本有所不同，可通过`phpinfo()`查看，或进入PHP容器通过`php -m`查看
-
-* 扩展配置文件夹路径为`/usr/local/etc/php/conf.d/`
+在nginx/sites-enabled/下新增配置文件，然后`docker exec webserver-nginx nginx -s reload`重新加载配置
 
 #### MySQL
 
 * 版本默认为**5.7**
 
-php连接配置
+连接配置
 
 ```php
 <?php
-$host     =  'mysql'
-$port     =  3306      # 如修改则改为你自己的
-$user     =  'root'
-$password =  123456    # 如修改则改为你自己的
+$host     =  'mysql';
+$port     =  3306;      # 如修改则改为你自己的
+$user     =  'root';
+$password =  123456;    # 如修改则改为你自己的
 ```
 
 #### Redis
 
-* 版本默认为**4.0**
+* 版本默认为**5.0**
 
 连接配置
 
 ```php
 <?php
-$host     =  'redis`
-$port     =  3306      # 如修改则改为你自己的
+$host     =  'redis';
+$port     =  '3306'      # 如修改则改为你自己的
 ```
-
-软件连接`host`改成`127.0.0.1`即可
 
 ### 启动
 
-#### mac
-
 ```shell
+
 $ chmod +x webserver.sh
 
 # 启动，第一次会花较长时间
@@ -154,49 +119,25 @@ webserver up
 webserver down
 ```
 
-### windows
-
-项目根目录下，使用以下命令
-
-```shell
-# 启动，第一次会花较长时间
-$ docker-compose -f docker-compose7.1.yml up -d
-
-# 关闭
-$ docker-compose -f docker-compose7.1.yml down
-```
-
-如果同时使用php5.6和php7.1
-
-```shell
-# 启动，第一次会花较长时间
-$ docker-compose -f docker-compose5.6.yml up -d
-$ docker-compose -f docker-compose7.1.yml up -d
-
-# 关闭
-$ docker-compose -f docker-compose5.6.yml down
-$ docker-compose -f docker-compose7.1.yml down
-```
-
 ### 使用
 
-使用比较简单，主要是站点管理
+使用比较简单，主要是站点管理
 
 #### 一些常用命令
 
 ```shell
 # 查看容器列表
-$ docker container ls
+$ docker ps
 
 # 进入容器(其他更换容器名即可)
-$ docker run -it webserver_php7.1 bash
+$ docker exec -it webserver-php sh
 
 # 退出容器
 $ exit
 
 # 重启容器
-$ docker container restart webserver_nginx_1
+$ docker container restart webserver-nginx
 
 # 查看网络详情
-$ docker network inspect webserver_webserver
+$ docker network inspect webserver-nginx
 ```
